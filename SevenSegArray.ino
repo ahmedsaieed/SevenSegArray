@@ -85,7 +85,7 @@ void sevseg_off() {
 void setup() {
 
   // call setpins to set it up.
-  setPins(28, 30, 26, 24, 22, ,32, 34);
+  setPins(28, 30, 26, 24, 22, 32, 34);
   
   sevseg_off();
 
