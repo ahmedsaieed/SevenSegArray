@@ -3,7 +3,7 @@
  
   Controls N-digit 7-segment display. Both Common Anode and Common Cathode displays supported.
  
- created 2 Jul 2012
+ created 2 Jul 2013
  by A. Saieed - a DOT saieed AT gmail.com
 
  Licensed under CC-BY-NC-SA 3.0 - http://creativecommons.org/licenses/by-nc-sa/3.0/
