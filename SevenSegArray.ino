@@ -14,6 +14,11 @@
 
 // Tested on Arduino 2560. Might not work with UNO.
 
+#define SEG_ON HIGH
+#define SEG_OFF LOW
+#define DIGIT_ON HIGH // Inverted
+#define DIGIT_OFF LOW // Inverted
+
 void intTo7Seg(int num);
 
 int a,b,c,d,e,f,g;
@@ -23,24 +28,19 @@ int number = 12345;
 int freq;
 
 // The number of pins for the digit enablers in enable_digit[], implicitly defines the
-// number of 7-segment used.
+// number of 7-segment digits used.
 
 // Example:
 // enable_digit[] = {1, 2, 3};
-// defines a 3-digit 7-segment whose selector pins are connected to the Arduino at pins 1, 2 and 3.
+// defines a 3-digit 7-segment display whose selector pins are connected to the Arduino at pins 1, 2 and 3.
 
-enable_digit[] = { 3, 4, 5, 6, 7};
+int enable_digit[] = { 3, 4, 5, 6, 7};
 
 const int num_digits = 5;
 
-int enable_digit[num_digits];
 int digits[num_digits+1];
 
-void setPins(int a, int b, int c, int d, int e, int f, int g)
-
-
-
-setPins(int a_pin, int b_pin, int c_pin, int d_pin, int e_pin, int f_pin, int g_pin) {
+void setPins(int a_pin, int b_pin, int c_pin, int d_pin, int e_pin, int f_pin, int g_pin) {
   a = a_pin;
   b = b_pin;
   c = c_pin;
@@ -62,32 +62,32 @@ setPins(int a_pin, int b_pin, int c_pin, int d_pin, int e_pin, int f_pin, int g_
   pinMode(enable_digit[2], OUTPUT);
   pinMode(enable_digit[3], OUTPUT);
   pinMode(enable_digit[4], OUTPUT);
-}
+};
 
-void sevseg_off() {
+void allOff() {
  // initialize to OFF
-  digitalWrite(a, LOW);
-  digitalWrite(b, LOW);
-  digitalWrite(c, LOW);
-  digitalWrite(d, LOW);
-  digitalWrite(e, LOW);
-  digitalWrite(f, LOW);
-  digitalWrite(g, LOW);
+  digitalWrite(a, SEG_OFF);
+  digitalWrite(b, SEG_OFF);
+  digitalWrite(c, SEG_OFF);
+  digitalWrite(d, SEG_OFF);
+  digitalWrite(e, SEG_OFF);
+  digitalWrite(f, SEG_OFF);
+  digitalWrite(g, SEG_OFF);
 
-  digitalWrite(enable_digit[0], LOW);
-  digitalWrite(enable_digit[1], LOW);
-  digitalWrite(enable_digit[2], LOW);
-  digitalWrite(enable_digit[3], LOW);
-  digitalWrite(enable_digit[4], LOW);
+  digitalWrite(enable_digit[0], DIGIT_OFF);
+  digitalWrite(enable_digit[1], DIGIT_OFF);
+  digitalWrite(enable_digit[2], DIGIT_OFF);
+  digitalWrite(enable_digit[3], DIGIT_OFF);
+  digitalWrite(enable_digit[4], DIGIT_OFF);
  
-}
+};
 
 void setup() {
 
-  // call setpins to set it up.
-  setPins(28, 30, 26, 24, 22, 32, 34);
+  // call setPins to set it up.
+  setPins(28, 30, 26, 24, 22 ,32, 34);
   
-  sevseg_off();
+  allOff();
 
 }
 
@@ -115,32 +115,32 @@ void loop() {
   digits[0] = freq % 10;
   //Serial.println(digits[0]);
 
-  digitalWrite(enable_digit[0],LOW);
-  digitalWrite(enable_digit[1],LOW);
-  digitalWrite(enable_digit[2],LOW);
-  digitalWrite(enable_digit[3],LOW);
-  digitalWrite(enable_digit[4],LOW);
+  digitalWrite(enable_digit[0],DIGIT_OFF);
+  digitalWrite(enable_digit[1],DIGIT_OFF);
+  digitalWrite(enable_digit[2],DIGIT_OFF);
+  digitalWrite(enable_digit[3],DIGIT_OFF);
+  digitalWrite(enable_digit[4],DIGIT_OFF);
 
 
   int current_digit = 0;
 
   for(current_digit = 0; current_digit < 5; current_digit++) {
 
-    digitalWrite(enable_digit[current_digit],HIGH);
+    digitalWrite(enable_digit[current_digit],DIGIT_ON);
 
     intTo7Seg (digits[current_digit]);
     
     delay(1);
-    digitalWrite(enable_digit[current_digit],LOW);
+    digitalWrite(enable_digit[current_digit],DIGIT_OFF);
     
 
-    digitalWrite(a, LOW);
-    digitalWrite(b, LOW);
-    digitalWrite(c, LOW);
-    digitalWrite(d, LOW);
-    digitalWrite(e, LOW);
-    digitalWrite(f, LOW);
-    digitalWrite(g, LOW);
+    digitalWrite(a, SEG_OFF);
+    digitalWrite(b, SEG_OFF);
+    digitalWrite(c, SEG_OFF);
+    digitalWrite(d, SEG_OFF);
+    digitalWrite(e, SEG_OFF);
+    digitalWrite(f, SEG_OFF);
+    digitalWrite(g, SEG_OFF);
 
     //delay(1);
 
@@ -154,113 +154,113 @@ void intTo7Seg(int num) {
 
   switch (num) {
   case 0:
-    digitalWrite(a, HIGH);
-    digitalWrite(b, HIGH);
-    digitalWrite(c, HIGH);
-    digitalWrite(d, HIGH);
-    digitalWrite(e, HIGH);
-    digitalWrite(f, HIGH);
-    digitalWrite(g, LOW);
+    digitalWrite(a, SEG_ON);
+    digitalWrite(b, SEG_ON);
+    digitalWrite(c, SEG_ON);
+    digitalWrite(d, SEG_ON);
+    digitalWrite(e, SEG_ON);
+    digitalWrite(f, SEG_ON);
+    digitalWrite(g, SEG_OFF);
 
     break;
 
   case 1:
-    digitalWrite(a, LOW);
-    digitalWrite(b, HIGH);
-    digitalWrite(c, HIGH);
-    digitalWrite(d, LOW);
-    digitalWrite(e, LOW);
-    digitalWrite(f, LOW);
-    digitalWrite(g, LOW);
+    digitalWrite(a, SEG_OFF);
+    digitalWrite(b, SEG_ON);
+    digitalWrite(c, SEG_ON);
+    digitalWrite(d, SEG_OFF);
+    digitalWrite(e, SEG_OFF);
+    digitalWrite(f, SEG_OFF);
+    digitalWrite(g, SEG_OFF);
 
     break;
 
   case 2:
-    digitalWrite(a, HIGH);
-    digitalWrite(b, HIGH);
-    digitalWrite(c, LOW);
-    digitalWrite(d, HIGH);
-    digitalWrite(e, HIGH);
-    digitalWrite(f, LOW);
-    digitalWrite(g, HIGH);
+    digitalWrite(a, SEG_ON);
+    digitalWrite(b, SEG_ON);
+    digitalWrite(c, SEG_OFF);
+    digitalWrite(d, SEG_ON);
+    digitalWrite(e, SEG_ON);
+    digitalWrite(f, SEG_OFF);
+    digitalWrite(g, SEG_ON);
 
     break;
 
   case 3:
-    digitalWrite(a, HIGH);
-    digitalWrite(b, HIGH);
-    digitalWrite(c, HIGH);
-    digitalWrite(d, HIGH);
-    digitalWrite(e, LOW);
-    digitalWrite(f, LOW);
-    digitalWrite(g, HIGH);
+    digitalWrite(a, SEG_ON);
+    digitalWrite(b, SEG_ON);
+    digitalWrite(c, SEG_ON);
+    digitalWrite(d, SEG_ON);
+    digitalWrite(e, SEG_OFF);
+    digitalWrite(f, SEG_OFF);
+    digitalWrite(g, SEG_ON);
 
     break;
 
 
   case 4:
-    digitalWrite(a, LOW);
-    digitalWrite(b, HIGH);
-    digitalWrite(c, HIGH);
-    digitalWrite(d, LOW);
-    digitalWrite(e, LOW);
-    digitalWrite(f, HIGH);
-    digitalWrite(g, HIGH);
+    digitalWrite(a, SEG_OFF);
+    digitalWrite(b, SEG_ON);
+    digitalWrite(c, SEG_ON);
+    digitalWrite(d, SEG_OFF);
+    digitalWrite(e, SEG_OFF);
+    digitalWrite(f, SEG_ON);
+    digitalWrite(g, SEG_ON);
 
     break;
 
   case 5:
-    digitalWrite(a, HIGH);
-    digitalWrite(b, LOW);
-    digitalWrite(c, HIGH);
-    digitalWrite(d, HIGH);
-    digitalWrite(e, LOW);
-    digitalWrite(f, HIGH);
-    digitalWrite(g, HIGH);
+    digitalWrite(a, SEG_ON);
+    digitalWrite(b, SEG_OFF);
+    digitalWrite(c, SEG_ON);
+    digitalWrite(d, SEG_ON);
+    digitalWrite(e, SEG_OFF);
+    digitalWrite(f, SEG_ON);
+    digitalWrite(g, SEG_ON);
 
     break;
 
   case 6:
-    digitalWrite(a, HIGH);
-    digitalWrite(b, LOW);
-    digitalWrite(c, HIGH);
-    digitalWrite(d, HIGH);
-    digitalWrite(e, HIGH);
-    digitalWrite(f, HIGH);
-    digitalWrite(g, HIGH);
+    digitalWrite(a, SEG_ON);
+    digitalWrite(b, SEG_OFF);
+    digitalWrite(c, SEG_ON);
+    digitalWrite(d, SEG_ON);
+    digitalWrite(e, SEG_ON);
+    digitalWrite(f, SEG_ON);
+    digitalWrite(g, SEG_ON);
 
     break;
 
   case 7:
-    digitalWrite(a, HIGH);
-    digitalWrite(b, HIGH);
-    digitalWrite(c, HIGH);
-    digitalWrite(d, LOW);
-    digitalWrite(e, LOW);
-    digitalWrite(f, LOW);
-    digitalWrite(g, LOW);
+    digitalWrite(a, SEG_ON);
+    digitalWrite(b, SEG_ON);
+    digitalWrite(c, SEG_ON);
+    digitalWrite(d, SEG_OFF);
+    digitalWrite(e, SEG_OFF);
+    digitalWrite(f, SEG_OFF);
+    digitalWrite(g, SEG_OFF);
 
     break;
 
   case 8:
-    digitalWrite(a, HIGH);
-    digitalWrite(b, HIGH);
-    digitalWrite(c, HIGH);
-    digitalWrite(d, HIGH);
-    digitalWrite(e, HIGH);
-    digitalWrite(f, HIGH);
-    digitalWrite(g, HIGH);
+    digitalWrite(a, SEG_ON);
+    digitalWrite(b, SEG_ON);
+    digitalWrite(c, SEG_ON);
+    digitalWrite(d, SEG_ON);
+    digitalWrite(e, SEG_ON);
+    digitalWrite(f, SEG_ON);
+    digitalWrite(g, SEG_ON);
 
     break;
 
   case 9:
-    digitalWrite(a, HIGH);
-    digitalWrite(b, HIGH);
-    digitalWrite(c, HIGH);
-    digitalWrite(d, HIGH);
-    digitalWrite(e, LOW);
-    digitalWrite(f, HIGH);
-    digitalWrite(g, HIGH);
+    digitalWrite(a, SEG_ON);
+    digitalWrite(b, SEG_ON);
+    digitalWrite(c, SEG_ON);
+    digitalWrite(d, SEG_ON);
+    digitalWrite(e, SEG_OFF);
+    digitalWrite(f, SEG_ON);
+    digitalWrite(g, SEG_ON);
 
     break;
 
