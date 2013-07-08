@@ -23,22 +23,18 @@ void intTo7Seg(int num);
 
 int a,b,c,d,e,f,g;
 
-int number = 12345;
+int number = 1;
 
 int freq;
-
-// The number of pins for the digit enablers in enable_digit[], implicitly defines the
-// number of 7-segment digits used.
 
 // Example:
 // enable_digit[] = {1, 2, 3};
 // defines a 3-digit 7-segment display whose selector pins are connected to the Arduino at pins 1, 2 and 3.
-
 int enable_digit[] = { 3, 4, 5, 6, 7};
 
 const int num_digits = 5;
 
-int digits[num_digits+1];
+int digits[num_digits];
 
 void setPins(int a_pin, int b_pin, int c_pin, int d_pin, int e_pin, int f_pin, int g_pin) {
   a = a_pin;
@@ -94,37 +90,37 @@ void setup() {
 void loop() {
   number++;
   freq = number;
+
   //  Serial.println(myEnc1000.read()); 
   if (freq < 0)
     freq = 0;
   else if (freq > 25000)
     freq = 25000;
 
-  digits[4] = freq % 10;
-  //Serial.println(digits[4]);
-  freq = freq / 10;
-  digits[3] = freq % 10;
-  //Serial.println(digits[3]);
-  freq = freq / 10;
-  digits[2] = freq % 10;
-  //Serial.println(digits[2]);
-  freq = freq / 10;  
-  digits[1] = freq % 10;
-  //Serial.println(digits[1]);
-  freq = freq / 10;
-  digits[0] = freq % 10;
-  //Serial.println(digits[0]);
+  for (int current_digit = num_digits-1; current_digit >= 0; current_digit--) {
+    digits[current_digit] = freq % 10;
+    freq/=10;
+  }
+  
+//  digits[4] = freq % 10;
+//  //Serial.println(digits[4]);
+//  freq = freq / 10;
+//  digits[3] = freq % 10;
+//  //Serial.println(digits[3]);
+//  freq = freq / 10;
+//  digits[2] = freq % 10;
+//  //Serial.println(digits[2]);
+//  freq = freq / 10;  
+//  digits[1] = freq % 10;
+//  //Serial.println(digits[1]);
+//  freq = freq / 10;
+//  digits[0] = freq % 10;
+//  //Serial.println(digits[0]);
 
-  digitalWrite(enable_digit[0],DIGIT_OFF);
-  digitalWrite(enable_digit[1],DIGIT_OFF);
-  digitalWrite(enable_digit[2],DIGIT_OFF);
-  digitalWrite(enable_digit[3],DIGIT_OFF);
-  digitalWrite(enable_digit[4],DIGIT_OFF);
+  allOff();
 
 
-  int current_digit = 0;
-
-  for(current_digit = 0; current_digit < 5; current_digit++) {
+  for(int current_digit = 0; current_digit < num_digits; current_digit++) {
 
     digitalWrite(enable_digit[current_digit],DIGIT_ON);
 
@@ -134,13 +130,13 @@ void loop() {
     digitalWrite(enable_digit[current_digit],DIGIT_OFF);
     
 
-    digitalWrite(a, SEG_OFF);
-    digitalWrite(b, SEG_OFF);
-    digitalWrite(c, SEG_OFF);
-    digitalWrite(d, SEG_OFF);
-    digitalWrite(e, SEG_OFF);
-    digitalWrite(f, SEG_OFF);
-    digitalWrite(g, SEG_OFF);
+//    digitalWrite(a, SEG_OFF);
+//    digitalWrite(b, SEG_OFF);
+//    digitalWrite(c, SEG_OFF);
+//    digitalWrite(d, SEG_OFF);
+//    digitalWrite(e, SEG_OFF);
+//    digitalWrite(f, SEG_OFF);
+//    digitalWrite(g, SEG_OFF);
 
     //delay(1);
 
